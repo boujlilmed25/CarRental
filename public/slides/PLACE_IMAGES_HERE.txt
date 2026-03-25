@@ -1,0 +1,13 @@
+Place your 5 slider images here with these exact filenames:
+
+  slide-1-mountain-road.jpg   → Luxury sedan on High Atlas mountain road (golden hour)
+  slide-2-marrakech-suv.jpg   → White SUV in Marrakech medina alley (warm light)
+  slide-3-customer-trust.jpg  → Moroccan professional receiving car keys (trust/social proof)
+  slide-4-whatsapp-booking.jpg → Phone + car key on luxury dashboard (WhatsApp booking)
+  slide-5-coastal-road.jpg    → Convertible on Atlantic coastal road (sunset)
+
+Recommended resolution: 1920×1080 (16:9)
+Format: JPG, optimized for web (quality 85, progressive)
+Max file size: 400KB per image (use squoosh.app or similar)
+
+Generate these images using the AI prompts provided in: HeroSlider_AI_Prompts.md

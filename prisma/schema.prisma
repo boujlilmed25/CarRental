@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Car {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  category     String
+  seats        Int
+  bags         String
+  transmission String
+  fuel         String
+  mileage      String
+  pricePerDay  Int
+  city         String
+  featured     Boolean  @default(false)
+  active       Boolean  @default(true)
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  name       String
+  phone      String
+  city       String
+  carSlug    String
+  pickupDate String
+  returnDate String
+  notes      String?
+  status     String   @default("new") // new, confirmed, done, canceled
+  createdAt  DateTime @default(now())
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String   @default("")
+  updatedAt DateTime @updatedAt
+}
+
+// GPS Tracking
+model GpsDevice {
+  id          String      @id @default(cuid())
+  carSlug     String      @unique
+  deviceToken String      @unique @default(cuid()) // used by GPS device to POST positions
+  label       String?     // e.g. "Tracker Teltonika"
+  isActive    Boolean     @default(true)
+  // Cached latest position (updated on each ping)
+  lastLat     Float?
+  lastLng     Float?
+  lastSpeed   Float?      // km/h
+  lastHeading Int?        // 0-360
+  lastIgnition Boolean?
+  lastUpdate  DateTime?
+  isOnline    Boolean     @default(false)
+  isMoving    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  positions   GpsPosition[]
+}
+
+model GpsPosition {
+  id        String    @id @default(cuid())
+  deviceId  String
+  device    GpsDevice @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  lat       Float
+  lng       Float
+  speed     Float?    // km/h
+  heading   Int?      // 0-360
+  ignition  Boolean?
+  accuracy  Float?    // meters
+  altitude  Float?
+  battery   Float?    // percentage
+  rawData   String?   // JSON string of original payload
+  timestamp DateTime  @default(now())
+}
+
+model GpsAlert {
+  id        String   @id @default(cuid())
+  carSlug   String
+  type      String   // overspeed | geofence_exit | no_data | power_off
+  message   String
+  lat       Float?
+  lng       Float?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
